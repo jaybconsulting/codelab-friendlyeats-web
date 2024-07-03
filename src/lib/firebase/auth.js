@@ -11,7 +11,7 @@ export function onAuthStateChanged(cb) {
 }
 
 export async function signInWithGoogle() {
-  const provider = GoogleAuthProvider();
+  const provider = new GoogleAuthProvider();
 
   try {
     signInWithPopup(auth, provider);
