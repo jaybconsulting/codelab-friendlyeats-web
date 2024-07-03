@@ -9,10 +9,6 @@ self.addEventListener('install', event => {
   // extract firebase config from query string
   const serializedFirebaseConfig = new URL(location).searchParams.get('firebaseConfig');
 
-  console.log("Serialized Firebase Config", serializedFirebaseConfig);
-  console.log("location: ", location);
-  console.log("URL of location: ", new URL(location));
-  
   if (!serializedFirebaseConfig) {
     throw new Error('Firebase Config object not found in service worker query string.');
   }
