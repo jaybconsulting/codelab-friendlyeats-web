@@ -51,10 +51,10 @@ function applyQueryFilters(q, { category, city, price, sort }) {
 	if (price) {
 		q = query(q, where("price", "==", price));
 	}
-	if (!sort || sort === "Rating") {
-		q = query(q, orderBy("Rating"));
-	} else {
-		q = query(q, orderBy("Review"));
+	if (sort === "Rating" || !sort) {
+		q = query(q, orderBy("avgRating", "desc"));
+	} else if (sort === "Review") {
+		q = query(q, orderBy("numRatings", "desc"));
 	}
 
 	return q;
@@ -71,7 +71,7 @@ export async function getRestaurants(db = db, filters = {}) {
 		return {
 			id: doc.id, // why isn't this just part of doc.data()?
 			...doc.data(),
-			timestamp: doc.data.timestamp.toDate()
+			timestamp: doc.data().timestamp.toDate()
 		}
 	});
 }
