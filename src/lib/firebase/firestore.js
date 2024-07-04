@@ -69,7 +69,7 @@ export async function getRestaurants(db = db, filters = {}) {
 
 	return results.docs.map((doc) => {
 		return {
-			id: doc.id, // why isn't this just part of doc.data()?
+			id: doc.id,
 			...doc.data(),
 			timestamp: doc.data().timestamp.toDate()
 		}
@@ -77,7 +77,28 @@ export async function getRestaurants(db = db, filters = {}) {
 }
 
 export function getRestaurantsSnapshot(cb, filters = {}) {
-	return () => {};
+	if (typeof cb !== "function") {
+		console.log("Error: the callback parameter is not a function");
+		return;
+	}
+	
+	let q = query(collection(db, "restaurants"));
+
+	q = applyQueryFilters(q, filters);
+
+	const unsubscribe = onSnapshot(q, (snapshot) => {
+		const restaurants = snapshot.docs.map(restaurant => {
+			return {
+				id: restaurant.id,
+				...restaurant.data(),
+				timestamp: restaurant.data().timestamp.toDate(),
+			};
+		});
+
+		cb(restaurants);
+	});
+	
+	return unsubscribe;
 }
 
 export async function getRestaurantById(db, restaurantId) {
