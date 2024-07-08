@@ -6,14 +6,14 @@ import {useEffect, useLayoutEffect, useRef} from "react";
 import RatingPicker from "@/src/components/RatingPicker.jsx";
 import { handleReviewFormSubmission } from "@/src/app/actions.js";
 
-const ReviewDialog = ({
+export default function ReviewDialog ({
 	isOpen,
 	handleClose,
 	review,
 	onChange,
 	userId,
 	id,
-}) => {
+}) {
 	const dialog = useRef();
 
 	// dialogs only render their backdrop when called with `showModal`
@@ -85,5 +85,3 @@ const ReviewDialog = ({
 		</dialog>
 	);
 };
-
-export default ReviewDialog;
